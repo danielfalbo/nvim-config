@@ -26,6 +26,6 @@ return {
     -- Still keep a timeout for safety
     timeout_ms = 3000,
     -- Don't fall back to LSP formatting
-    lsp_fallback = false,
+    lsp_fallback = true,
   },
 }
