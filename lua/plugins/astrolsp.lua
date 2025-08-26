@@ -6,6 +6,7 @@
 ---@type LazySpec
 return {
   "AstroNvim/astrolsp",
+
   ---@type AstroLSPOpts
   opts = {
     -- Configuration table of features provided by AstroLSP
@@ -18,20 +19,20 @@ return {
     formatting = {
       -- control auto formatting on save
       format_on_save = {
-        -- Disabled in favor of conform.nvim 
-        enabled = false, -- enable or disable format on save globally
+        -- For slow formatters I use conform.nvim which is non-blockingly async
+        -- enabled = true, -- enable or disable format on save globally
         allow_filetypes = { -- enable format on save for specified filetypes only
-          -- "go",
+          "lua",
         },
-        ignore_filetypes = { -- disable format on save for specified filetypes
-          -- "python",
-        },
+        -- ignore_filetypes = { -- disable format on save for specified filetypes
+        --   -- "python",
+        -- },
       },
-      disabled = { -- disable formatting capabilities for the listed language servers
-        -- disable lua_ls formatting capability if you want to use StyLua to format your lua code
-        -- "lua_ls",
-      },
-      timeout_ms = 1000, -- default format timeout
+      -- disabled = { -- disable formatting capabilities for the listed language servers
+      --   -- disable lua_ls formatting capability if you want to use StyLua to format your lua code
+      --   -- "lua_ls",
+      -- },
+      -- timeout_ms = 1000, -- default format timeout
       -- filter = function(client) -- fully override the default formatting function
       --   return true
       -- end

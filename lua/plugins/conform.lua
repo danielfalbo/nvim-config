@@ -25,7 +25,7 @@ return {
     format_after_save = true,
     -- Still keep a timeout for safety
     timeout_ms = 3000,
-    -- Don't fall back to LSP formatting
+    -- Fall back to LSP formatting
     lsp_fallback = true,
   },
 }
