@@ -4,5 +4,7 @@ return {
   opts = function(_, opts)
     local status = require "astroui.status"
     opts.tabline[2] = status.heirline.make_buflist(status.component.tabline_file_info { close_button = false })
+    local tab_section = opts.tabline[#opts.tabline]
+    tab_section[#tab_section] = nil
   end,
 }
