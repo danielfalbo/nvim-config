@@ -5,6 +5,16 @@
 ---@type LazySpec
 return {
   {
+    "folke/twilight.nvim",
+    cmd = { "Twilight", "TwilightEnable", "TwilightDisable" },
+    opts = {
+      dimming = {
+        alpha = 0.25, -- amount of dimming
+      },
+      context = 10, -- amount of lines we will try to show around the current line
+    },
+  },
+  {
     "nvim-neo-tree/neo-tree.nvim",
     opts = {
       filesystem = {
