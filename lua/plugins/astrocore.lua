@@ -24,16 +24,16 @@ return {
     -- },
     -- passed to `vim.filetype.add`
     -- filetypes = {
-      -- see `:h vim.filetype.add` for usage
-      -- extension = {
-      --   foo = "fooscript",
-      -- },
-      -- filename = {
-      --   [".foorc"] = "fooscript",
-      -- },
-      -- pattern = {
-      --   [".*/etc/foo/.*"] = "fooscript",
-      -- },
+    -- see `:h vim.filetype.add` for usage
+    -- extension = {
+    --   foo = "fooscript",
+    -- },
+    -- filename = {
+    --   [".foorc"] = "fooscript",
+    -- },
+    -- pattern = {
+    --   [".*/etc/foo/.*"] = "fooscript",
+    -- },
     -- },
     -- vim options can be configured here
     options = {
@@ -44,13 +44,13 @@ return {
         -- signcolumn = "yes", -- sets vim.opt.signcolumn to yes
         wrap = true, -- sets vim.opt.wrap
         tabstop = 4, -- number of space in a tab
-        conceallevel = 2, -- enable conceal
-        foldcolumn = "0" -- disable fold column
+        conceallevel = 0, -- disable conceal
+        foldcolumn = "0", -- disable fold column
       },
       -- g = { -- vim.g.<key>
-        -- configure global vim variables (vim.g)
-        -- NOTE: `mapleader` and `maplocalleader` must be set in the AstroNvim opts or before `lazy.setup`
-        -- This can be found in the `lua/lazy_setup.lua` file
+      -- configure global vim variables (vim.g)
+      -- NOTE: `mapleader` and `maplocalleader` must be set in the AstroNvim opts or before `lazy.setup`
+      -- This can be found in the `lua/lazy_setup.lua` file
       -- },
     },
     -- Mappings can be configured through AstroCore as well.
