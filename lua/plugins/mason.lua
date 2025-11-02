@@ -10,6 +10,7 @@ return {
         -- install language servers
         "lua-language-server",
         "eslint-lsp",
+        "typescript-language-server",
 
         -- install formatters
         "stylua",
