@@ -66,6 +66,14 @@ return {
         -- ["]b"] = { function() require("astrocore.buffer").nav(vim.v.count1) end, desc = "Next buffer" },
         -- ["[b"] = { function() require("astrocore.buffer").nav(-vim.v.count1) end, desc = "Previous buffer" },
 
+        -- neo-tree git tab
+        ["<Leader>ng"] = {
+          function()
+            require("neo-tree.command").execute({ source = "git_status", toggle = true })
+          end,
+          desc = "Toggle neo-tree git status",
+        },
+
         -- -- mappings seen under group name "Buffer"
         -- ["<Leader>bd"] = {
         --   function()
