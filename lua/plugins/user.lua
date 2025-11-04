@@ -63,9 +63,11 @@ return {
   {
     "neanias/everforest-nvim",
     priority = 1000,
-    opts = {
-      background = "dark", -- dark, light
-    },
+    config = function()
+      require("everforest").setup({
+        background = "dark", -- dark, light
+      })
+    end,
   },
   {
     "folke/twilight.nvim",
