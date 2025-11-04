@@ -2,6 +2,39 @@
 -- This is just pure lua so anything that doesn't
 -- fit in the normal config locations above can go here
 
+-- Fix for tree-sitter highlighter "end_col out of range" error
+-- Wrap nvim_buf_set_extmark globally to validate column ranges
+do
+  local original_set_extmark = vim.api.nvim_buf_set_extmark
+  vim.api.nvim_buf_set_extmark = function(ns_id, buffer, line, col, opts)
+    opts = opts or {}
+    col = col or 0
+    
+    -- Validate column ranges against actual line length
+    local ok, lines = pcall(vim.api.nvim_buf_get_lines, buffer, line, line + 1, false)
+    if ok and lines[1] then
+      local line_len = #lines[1]
+      
+      -- Clamp end_col to line length
+      if opts.end_col and opts.end_col > line_len then
+        opts.end_col = line_len
+      end
+      
+      -- Clamp start col to line length
+      if col > line_len then
+        col = line_len
+      end
+      
+      -- Ensure end_col >= start col
+      if opts.end_col and opts.end_col < col then
+        opts.end_col = col
+      end
+    end
+    
+    return original_set_extmark(ns_id, buffer, line, col, opts)
+  end
+end
+
 -- Set .mdx files to markdown filetype
 vim.filetype.add({
   extension = {
