@@ -4,6 +4,69 @@
 
 ---@type LazySpec
 return {
+  -- Colorschemes
+  {
+    "catppuccin/nvim",
+    name = "catppuccin",
+    priority = 1000,
+    opts = {
+      flavour = "mocha", -- mocha, macchiato, frappe, latte
+    },
+  },
+  {
+    "folke/tokyonight.nvim",
+    priority = 1000,
+    opts = {
+      style = "night", -- storm, moon, night, day
+    },
+  },
+  {
+    "navarasu/onedark.nvim",
+    priority = 1000,
+    opts = {
+      style = "dark", -- dark, darker, cool, deep, warm, warmer, light
+    },
+  },
+  {
+    "EdenEast/nightfox.nvim",
+    priority = 1000,
+    opts = {
+      -- nightfox, nordfox, duskfox, carbonfox, terafox
+    },
+  },
+  {
+    "rebelot/kanagawa.nvim",
+    priority = 1000,
+    opts = {
+      -- wave, dragon, lotus
+    },
+  },
+  {
+    "ellisonleao/gruvbox.nvim",
+    priority = 1000,
+    opts = {
+      -- dark, light
+    },
+  },
+  {
+    "rose-pine/neovim",
+    name = "rose-pine",
+    priority = 1000,
+    opts = {
+      variant = "moon", -- auto, main, moon, dawn
+    },
+  },
+  {
+    "Mofiqul/dracula.nvim",
+    priority = 1000,
+  },
+  {
+    "neanias/everforest-nvim",
+    priority = 1000,
+    opts = {
+      background = "dark", -- dark, light
+    },
+  },
   {
     "folke/twilight.nvim",
     cmd = { "Twilight", "TwilightEnable", "TwilightDisable" },
