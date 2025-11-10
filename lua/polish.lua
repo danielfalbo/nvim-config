@@ -36,7 +36,7 @@ do
 end
 
 -- Highlight trailing whitespace
-vim.api.nvim_set_hl(0, "TrailingWhitespace", { ctermbg = "red", bg = "red" })
+vim.api.nvim_set_hl(0, "TrailingWhitespace", { ctermbg = "lightred", bg = "#ff6b6b" })
 vim.api.nvim_create_autocmd({ "BufWinEnter", "WinEnter" }, {
   pattern = "*",
   callback = function()
