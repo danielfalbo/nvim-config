@@ -35,6 +35,22 @@ do
   end
 end
 
+-- Highlight trailing whitespace
+vim.api.nvim_set_hl(0, "TrailingWhitespace", { ctermbg = "red", bg = "red" })
+vim.api.nvim_create_autocmd({ "BufWinEnter", "WinEnter" }, {
+  pattern = "*",
+  callback = function()
+    local buftype = vim.bo.buftype
+    local filetype = vim.bo.filetype
+    -- Only highlight in normal file buffers, exclude popups, quickfix, help, etc.
+    if buftype == "" and filetype ~= "help" and filetype ~= "qf" then
+      vim.cmd([[match TrailingWhitespace /\s\+$/]])
+    else
+      vim.cmd([[match none]])
+    end
+  end,
+})
+
 -- Set .mdx files to markdown filetype
 vim.filetype.add({
   extension = {
