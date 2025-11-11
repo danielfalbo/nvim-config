@@ -74,6 +74,9 @@ return {
           desc = "Toggle neo-tree git status",
         },
 
+        -- save file with Enter
+        ["<Enter>"] = { ":w<CR>", desc = "Save file" },
+
         -- -- mappings seen under group name "Buffer"
         -- ["<Leader>bd"] = {
         --   function()
