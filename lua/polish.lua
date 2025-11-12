@@ -61,6 +61,15 @@ vim.filetype.add {
 -- Convert double dash to em dash
 vim.cmd [[iabbrev -- —]]
 
+-- Disable cursorline (ensure it stays off)
+vim.opt.cursorline = false
+vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter", "VimEnter" }, {
+  pattern = "*",
+  callback = function()
+    vim.opt.cursorline = false
+  end,
+})
+
 -- Custom Zen command with width argument
 vim.api.nvim_create_user_command("Zen", function(opts)
   local width = tonumber(opts.args)

@@ -47,6 +47,7 @@ return {
         conceallevel = 0, -- disable conceal
         foldcolumn = "0", -- disable fold column
         colorcolumn = "80", -- highlight 80th column
+        cursorline = false, -- disable cursor line highlight
       },
       -- g = { -- vim.g.<key>
       -- configure global vim variables (vim.g)
