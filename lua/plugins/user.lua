@@ -31,7 +31,13 @@ return {
     "EdenEast/nightfox.nvim",
     priority = 1000,
     opts = {
-      -- nightfox, nordfox, duskfox, carbonfox, terafox
+      options = {
+        styles = {
+          comments = "italic",
+          keywords = "bold",
+          types = "italic,bold",
+        },
+      },
     },
   },
   {

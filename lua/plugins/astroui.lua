@@ -4,7 +4,7 @@ return {
   ---@type AstroUIOpts
   opts = {
     -- change colorscheme
-    colorscheme = "gruvbox",
+    colorscheme = "nordfox",
     -- disable breadcrumbs and symbols
     breadcrumbs = false,
     -- AstroUI allows you to easily modify highlight groups easily for any and all colorschemes
