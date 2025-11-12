@@ -2,6 +2,11 @@
 -- This is just pure lua so anything that doesn't
 -- fit in the normal config locations above can go here
 
+-- Enable system clipboard on Linux
+if vim.fn.has("unix") == 1 and vim.fn.has("mac") == 0 and vim.fn.has("macunix") == 0 then
+  vim.opt.clipboard = "unnamedplus"
+end
+
 -- Fix for tree-sitter highlighter "end_col out of range" error
 -- Wrap nvim_buf_set_extmark globally to validate column ranges
 do
