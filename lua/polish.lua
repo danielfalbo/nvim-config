@@ -9,28 +9,22 @@ do
   vim.api.nvim_buf_set_extmark = function(ns_id, buffer, line, col, opts)
     opts = opts or {}
     col = col or 0
-    
+
     -- Validate column ranges against actual line length
     local ok, lines = pcall(vim.api.nvim_buf_get_lines, buffer, line, line + 1, false)
     if ok and lines[1] then
       local line_len = #lines[1]
-      
+
       -- Clamp end_col to line length
-      if opts.end_col and opts.end_col > line_len then
-        opts.end_col = line_len
-      end
-      
+      if opts.end_col and opts.end_col > line_len then opts.end_col = line_len end
+
       -- Clamp start col to line length
-      if col > line_len then
-        col = line_len
-      end
-      
+      if col > line_len then col = line_len end
+
       -- Ensure end_col >= start col
-      if opts.end_col and opts.end_col < col then
-        opts.end_col = col
-      end
+      if opts.end_col and opts.end_col < col then opts.end_col = col end
     end
-    
+
     return original_set_extmark(ns_id, buffer, line, col, opts)
   end
 end
@@ -42,24 +36,30 @@ vim.api.nvim_create_autocmd({ "BufWinEnter", "WinEnter" }, {
   callback = function()
     local buftype = vim.bo.buftype
     local filetype = vim.bo.filetype
-    -- Only highlight in normal file buffers, exclude popups, quickfix, help, etc.
-    if buftype == "" and filetype ~= "help" and filetype ~= "qf" then
-      vim.cmd([[match TrailingWhitespace /\s\+$/]])
+    local bufname = vim.api.nvim_buf_get_name(0)
+    local modifiable = vim.bo.modifiable
+    local buflisted = vim.bo.buflisted
+    -- Only highlight in normal file buffers
+    -- Exclude popups, quickfix, help, dashboard, etc.
+    -- Dashboard buffers are typically unnamed, so require bufname OR (unnamed + modifiable + listed for new files)
+    local is_normal_file = buftype == "" and filetype ~= "help" and filetype ~= "qf" and bufname ~= "" -- Only highlight buffers with actual filenames
+    if is_normal_file then
+      vim.cmd [[match TrailingWhitespace /\s\+$/]]
     else
-      vim.cmd([[match none]])
+      vim.cmd [[match none]]
     end
   end,
 })
 
 -- Set .mdx files to markdown filetype
-vim.filetype.add({
+vim.filetype.add {
   extension = {
     mdx = "markdown",
   },
-})
+}
 
 -- Convert double dash to em dash
-vim.cmd([[iabbrev -- —]])
+vim.cmd [[iabbrev -- —]]
 
 -- Custom Zen command with width argument
 vim.api.nvim_create_user_command("Zen", function(opts)
@@ -93,10 +93,10 @@ vim.api.nvim_create_autocmd("FileType", {
       local before_cursor = line:sub(1, col)
 
       -- Match import statements
-      if not before_cursor:match("import") then return false end
+      if not before_cursor:match "import" then return false end
 
       -- Find the opening brace
-      local import_brace_pos = before_cursor:match("import%s+[^{]*{()")
+      local import_brace_pos = before_cursor:match "import%s+[^{]*{()"
       if not import_brace_pos then return false end
 
       -- Count braces from import brace position
@@ -117,9 +117,7 @@ vim.api.nvim_create_autocmd("FileType", {
     -- Helper function to trigger completion
     local function trigger_completion()
       -- Use cmp.complete() with a small delay to ensure buffer is updated
-      vim.defer_fn(function()
-        cmp.complete()
-      end, 50)
+      vim.defer_fn(function() cmp.complete() end, 50)
     end
 
     -- Use InsertCharPre to catch comma before it's inserted
@@ -133,14 +131,12 @@ vim.api.nvim_create_autocmd("FileType", {
           local line = vim.api.nvim_get_current_line()
           local col = vim.api.nvim_win_get_cursor(0)[2]
           local before_cursor = line:sub(1, col)
-          local is_import_context = before_cursor:match("import%s+[^{]*{")
+          local is_import_context = before_cursor:match "import%s+[^{]*{"
 
           if is_import_context then
             -- Wait for comma to be inserted, then check and trigger
             vim.defer_fn(function()
-              if is_in_import_braces() then
-                trigger_completion()
-              end
+              if is_in_import_braces() then trigger_completion() end
             end, 150)
           end
         end
@@ -158,11 +154,9 @@ vim.api.nvim_create_autocmd("FileType", {
           local col = vim.api.nvim_win_get_cursor(0)[2]
           local before_cursor = line:sub(1, col)
 
-          if before_cursor:match("import%s+[^{]*{") and before_cursor:match(",%s*$") then
+          if before_cursor:match "import%s+[^{]*{" and before_cursor:match ",%s*$" then
             vim.defer_fn(function()
-              if is_in_import_braces() then
-                trigger_completion()
-              end
+              if is_in_import_braces() then trigger_completion() end
             end, 100)
           end
         end
