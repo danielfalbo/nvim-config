@@ -26,19 +26,35 @@ do
     opts = opts or {}
     col = col or 0
 
+    -- Validate buffer exists and is valid
+    if not vim.api.nvim_buf_is_valid(buffer) then
+      return original_set_extmark(ns_id, buffer, line, col, opts)
+    end
+
+    -- Validate line is within buffer range
+    local line_count = vim.api.nvim_buf_line_count(buffer)
+    if line < 0 or line >= line_count then
+      return original_set_extmark(ns_id, buffer, line, col, opts)
+    end
+
     -- Validate column ranges against actual line length
     local ok, lines = pcall(vim.api.nvim_buf_get_lines, buffer, line, line + 1, false)
     if ok and lines[1] then
       local line_len = #lines[1]
 
-      -- Clamp end_col to line length
-      if opts.end_col and opts.end_col > line_len then opts.end_col = line_len end
-
-      -- Clamp start col to line length
+      -- Clamp start col to line length (0-indexed, so max is line_len)
+      if col < 0 then col = 0 end
       if col > line_len then col = line_len end
 
-      -- Ensure end_col >= start col
-      if opts.end_col and opts.end_col < col then opts.end_col = col end
+      -- Clamp end_col to line length and ensure it's >= start col
+      if opts.end_col then
+        if opts.end_col < 0 then opts.end_col = 0 end
+        if opts.end_col > line_len then opts.end_col = line_len end
+        if opts.end_col < col then opts.end_col = col end
+      end
+    else
+      -- If we can't get the line, skip end_col to avoid errors
+      opts.end_col = nil
     end
 
     return original_set_extmark(ns_id, buffer, line, col, opts)
