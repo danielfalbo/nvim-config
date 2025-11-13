@@ -2,6 +2,17 @@
 -- This is just pure lua so anything that doesn't
 -- fit in the normal config locations above can go here
 
+-- Force truecolor support (fixes tmux color issues)
+vim.opt.termguicolors = true
+-- Force truecolor even when TERM doesn't advertise it (common in tmux)
+if vim.env.TMUX then
+  -- Override TERM to signal truecolor support
+  vim.env.TERM = "tmux-256color"
+  vim.env.COLORTERM = "truecolor"
+  -- Force Neovim to use truecolor regardless of terminfo
+  vim.cmd("set termguicolors")
+end
+
 -- Enable system clipboard on Linux
 if vim.fn.has("unix") == 1 and vim.fn.has("mac") == 0 and vim.fn.has("macunix") == 0 then
   vim.opt.clipboard = "unnamedplus"
