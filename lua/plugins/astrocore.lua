@@ -69,11 +69,12 @@ return {
         -- ["[b"] = { function() require("astrocore.buffer").nav(-vim.v.count1) end, desc = "Previous buffer" },
 
         -- neo-tree git tab
+        ["<Leader>n"] = { desc = "Neo-tree" },
         ["<Leader>ng"] = {
           function()
             require("neo-tree.command").execute({ source = "git_status", toggle = true })
           end,
-          desc = "Toggle neo-tree git status",
+          desc = "Open git in neo-tree",
         },
 
         -- save file with Enter
