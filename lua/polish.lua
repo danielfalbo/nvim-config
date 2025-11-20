@@ -120,6 +120,17 @@ vim.api.nvim_create_user_command("Zen", function(opts)
   end
 end, { nargs = "?", desc = "Toggle zen mode with optional width" })
 
+-- Close quickfix buffer after jumping to location with <cr>
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "qf",
+  callback = function()
+    vim.keymap.set("n", "<cr>", function()
+      vim.cmd("cc")
+      vim.cmd("cclose")
+    end, { buffer = true, desc = "Jump to location and close quickfix" })
+  end,
+})
+
 -- Configure completion to trigger on comma for TypeScript imports
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
