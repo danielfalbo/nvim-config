@@ -46,7 +46,7 @@ return {
         tabstop = 4, -- number of space in a tab
         conceallevel = 0, -- disable conceal
         foldcolumn = "0", -- disable fold column
-        colorcolumn = "80", -- highlight 80th column
+        -- colorcolumn = "80", -- highlight 80th column
         cursorline = false, -- disable cursor line highlight
       },
       -- g = { -- vim.g.<key>
@@ -71,14 +71,25 @@ return {
         -- neo-tree git tab
         ["<Leader>n"] = { desc = "Neo-tree" },
         ["<Leader>ng"] = {
-          function()
-            require("neo-tree.command").execute({ source = "git_status", toggle = true })
-          end,
+          function() require("neo-tree.command").execute { source = "git_status", toggle = true } end,
           desc = "Open git in neo-tree",
         },
 
-        -- save file with Enter
-        ["<Enter>"] = { ":w<CR>", desc = "Save file" },
+        -- save file with Enter (only in source code buffers)
+        ["<Enter>"] = {
+          function()
+            local buftype = vim.bo.buftype
+            local filetype = vim.bo.filetype
+            -- Only save if it's a normal buffer (not quickfix, neo-tree, etc.)
+            if buftype == "" and filetype ~= "qf" and vim.bo.modifiable then
+              vim.cmd("w")
+            else
+              -- Fall back to default behavior
+              vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<CR>", true, false, true), "n", false)
+            end
+          end,
+          desc = "Save file",
+        },
 
         -- -- mappings seen under group name "Buffer"
         -- ["<Leader>bd"] = {
