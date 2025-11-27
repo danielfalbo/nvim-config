@@ -90,8 +90,8 @@ vim.filetype.add {
   },
 }
 
--- Convert double dash to em dash
-vim.cmd [[iabbrev -- —]]
+-- -- Convert double dash to em dash
+-- vim.cmd [[iabbrev -- —]]
 
 -- Disable cursorline (ensure it stays off)
 vim.opt.cursorline = false
