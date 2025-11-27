@@ -5,6 +5,7 @@ return {
   opts = {
     -- change colorscheme
     colorscheme = "nordfox",
+    -- colorscheme = "dayfox",
     -- disable breadcrumbs and symbols
     breadcrumbs = false,
     -- AstroUI allows you to easily modify highlight groups easily for any and all colorschemes
