@@ -76,6 +76,22 @@ return {
     end,
   },
   {
+    "shaunsingh/solarized.nvim",
+    priority = 1000,
+    config = function()
+      vim.g.solarized_italic_comments = true
+      vim.g.solarized_italic_keywords = true
+      vim.g.solarized_italic_functions = false
+      vim.g.solarized_italic_variables = false
+      vim.g.solarized_contrast = "normal" -- normal|high|low
+      vim.g.solarized_bold = true
+      vim.g.solarized_underline = true
+      vim.g.solarized_italic = true
+      vim.g.solarized_termtrans = false
+      vim.g.solarized_diffmode = "normal" -- normal|high|low
+    end,
+  },
+  {
     "folke/twilight.nvim",
     cmd = { "Twilight", "TwilightEnable", "TwilightDisable" },
     opts = {

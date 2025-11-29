@@ -5,6 +5,7 @@ return {
   opts = {
     -- change colorscheme
     colorscheme = "nordfox",
+    -- colorscheme = "solarized",
     -- colorscheme = "dayfox",
     -- disable breadcrumbs and symbols
     breadcrumbs = false,
