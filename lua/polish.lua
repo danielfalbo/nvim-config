@@ -236,3 +236,8 @@ vim.api.nvim_create_autocmd("FileType", {
     end, { buffer = true, desc = "Force import completion" })
   end,
 })
+
+-- read .vimrc.local if present (relative to current working dir)
+if vim.fn.filereadable(".vimrc.local") == 1 then
+  vim.cmd("source .vimrc.local")
+end
