@@ -241,3 +241,41 @@ vim.api.nvim_create_autocmd("FileType", {
 if vim.fn.filereadable(".vimrc.local") == 1 then
   vim.cmd("source .vimrc.local")
 end
+
+-- macOS system appearance detection and colorscheme switching
+if vim.fn.has("mac") == 1 or vim.fn.has("macunix") == 1 then
+  local function get_system_appearance()
+    local handle = io.popen("defaults read -g AppleInterfaceStyle 2>/dev/null")
+    if handle then
+      local result = handle:read("*a")
+      handle:close()
+      return result:match("Dark") and "dark" or "light"
+    end
+    return "dark" -- default to dark if detection fails
+  end
+
+  local function set_colorscheme_from_system()
+    local appearance = get_system_appearance()
+    local colorscheme = appearance == "light" and "dawnfox" or "nordfox"
+    pcall(vim.cmd, "colorscheme " .. colorscheme)
+  end
+
+  -- Set colorscheme on startup
+  set_colorscheme_from_system()
+
+  -- Check for system appearance changes periodically (every 5 seconds)
+  local timer = vim.loop.new_timer()
+  local last_appearance = get_system_appearance()
+  timer:start(5000, 5000, function()
+    local current_appearance = get_system_appearance()
+    if current_appearance ~= last_appearance then
+      last_appearance = current_appearance
+      vim.schedule(set_colorscheme_from_system)
+    end
+  end)
+
+  -- Command to manually refresh colorscheme
+  vim.api.nvim_create_user_command("RefreshColorscheme", set_colorscheme_from_system, {
+    desc = "Refresh colorscheme based on macOS system appearance",
+  })
+end

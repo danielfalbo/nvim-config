@@ -3,8 +3,8 @@ return {
   "AstroNvim/astroui",
   ---@type AstroUIOpts
   opts = {
-    -- change colorscheme
-    colorscheme = "nordfox",
+    -- change colorscheme (set dynamically in polish.lua based on system appearance)
+    -- colorscheme = "nordfox",
     -- colorscheme = "solarized",
     -- colorscheme = "dayfox",
     -- disable breadcrumbs and symbols
