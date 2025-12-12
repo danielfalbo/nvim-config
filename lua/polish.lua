@@ -4,6 +4,9 @@
 
 -- Force truecolor support (fixes tmux color issues)
 vim.opt.termguicolors = true
+
+-- Use separate lines for status bar and command bar (like vanilla vim)
+vim.opt.cmdheight = 1
 -- Force truecolor even when TERM doesn't advertise it (common in tmux)
 if vim.env.TMUX then
   -- Override TERM to signal truecolor support
