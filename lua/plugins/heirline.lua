@@ -72,7 +72,7 @@ return {
 
     local file_path = {
       provider = function()
-        local path = vim.fn.expand "%:F"
+        local path = vim.fn.expand "%:."
         return " " .. path .. " "
       end,
       hl = "User4",
