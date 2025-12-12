@@ -43,7 +43,10 @@ return {
         -- spell = false, -- sets vim.opt.spell
         -- signcolumn = "yes", -- sets vim.opt.signcolumn to yes
         wrap = true, -- sets vim.opt.wrap
-        tabstop = 4, -- number of space in a tab
+        tabstop = 2, -- number of spaces in a tab
+        shiftwidth = 2, -- spaces for each indentation level
+        softtabstop = 2, -- spaces when pressing Tab in insert mode
+        expandtab = true, -- convert tabs to spaces
         conceallevel = 0, -- disable conceal
         foldcolumn = "0", -- disable fold column
         -- colorcolumn = "80", -- highlight 80th column
