@@ -29,7 +29,25 @@ local function update_title()
     filename = "[No Name]"
   end
 
-  if filename ~= "" then vim.opt.titlestring = filename end
+  -- Try to find project root (git repository)
+  local project_name = ""
+  if bufname ~= "" then
+    local file_dir = vim.fn.fnamemodify(bufname, ":p:h")
+    -- Use git rev-parse to get the root directory (more reliable)
+    local git_root_output = vim.fn.systemlist("cd " .. vim.fn.shellescape(file_dir) .. " && git rev-parse --show-toplevel 2>/dev/null")
+    if git_root_output and #git_root_output > 0 and git_root_output[1] ~= "" then
+      local root_dir = git_root_output[1]
+      project_name = vim.fn.fnamemodify(root_dir, ":t")
+    end
+  end
+
+  -- Build title: project name + filename, or just filename
+  local title = filename
+  if project_name ~= "" then
+    title = project_name .. " - " .. filename
+  end
+
+  if filename ~= "" then vim.opt.titlestring = title end
 end
 
 vim.api.nvim_create_autocmd({ "BufEnter", "BufFilePost", "BufWritePost" }, {
