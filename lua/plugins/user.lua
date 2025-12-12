@@ -153,6 +153,9 @@ return {
           }, "\n"),
         },
       },
+      indent = {
+        enabled = false, -- disable indent guides by default
+      },
     },
   },
 
