@@ -7,6 +7,35 @@ vim.opt.termguicolors = true
 
 -- Use separate lines for status bar and command bar (like vanilla vim)
 vim.opt.cmdheight = 1
+
+-- Set terminal title to current filename
+vim.opt.title = true
+
+-- Update terminal title when switching buffers
+local function update_title()
+  local buftype = vim.bo.buftype
+  local bufname = vim.api.nvim_buf_get_name(0)
+
+  -- Only update for real file buffers
+  if buftype ~= "" and buftype ~= "acwrite" then return end
+
+  -- Skip buffers with special names (like filetype-match-scratch)
+  if bufname ~= "" and (bufname:match "filetype%-" or bufname:match "^[^/]*%-scratch") then return end
+
+  local filename = ""
+  if bufname ~= "" then
+    filename = vim.fn.fnamemodify(bufname, ":t")
+  else
+    filename = "[No Name]"
+  end
+
+  if filename ~= "" then vim.opt.titlestring = filename end
+end
+
+vim.api.nvim_create_autocmd({ "BufEnter", "BufFilePost", "BufWritePost" }, {
+  pattern = "*",
+  callback = update_title,
+})
 -- Force truecolor even when TERM doesn't advertise it (common in tmux)
 if vim.env.TMUX then
   -- Override TERM to signal truecolor support
