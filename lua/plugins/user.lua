@@ -70,9 +70,9 @@ return {
     "neanias/everforest-nvim",
     priority = 1000,
     config = function()
-      require("everforest").setup({
-        background = "dark", -- dark, light
-      })
+      require("everforest").setup {
+        background = "hard", -- hard, medium, soft
+      }
     end,
   },
   {
@@ -118,9 +118,7 @@ return {
     "kylechui/nvim-surround",
     version = "*",
     event = "VeryLazy",
-    config = function()
-      require("nvim-surround").setup({})
-    end,
+    config = function() require("nvim-surround").setup {} end,
   },
 
   -- -- == Examples of Adding Plugins ==

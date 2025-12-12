@@ -10,11 +10,11 @@ if vim.env.TMUX then
   vim.env.TERM = "tmux-256color"
   vim.env.COLORTERM = "truecolor"
   -- Force Neovim to use truecolor regardless of terminfo
-  vim.cmd("set termguicolors")
+  vim.cmd "set termguicolors"
 end
 
 -- Enable system clipboard on Linux
-if vim.fn.has("unix") == 1 and vim.fn.has("mac") == 0 and vim.fn.has("macunix") == 0 then
+if vim.fn.has "unix" == 1 and vim.fn.has "mac" == 0 and vim.fn.has "macunix" == 0 then
   vim.opt.clipboard = "unnamedplus"
 end
 
@@ -27,15 +27,11 @@ do
     col = col or 0
 
     -- Validate buffer exists and is valid
-    if not vim.api.nvim_buf_is_valid(buffer) then
-      return original_set_extmark(ns_id, buffer, line, col, opts)
-    end
+    if not vim.api.nvim_buf_is_valid(buffer) then return original_set_extmark(ns_id, buffer, line, col, opts) end
 
     -- Validate line is within buffer range
     local line_count = vim.api.nvim_buf_line_count(buffer)
-    if line < 0 or line >= line_count then
-      return original_set_extmark(ns_id, buffer, line, col, opts)
-    end
+    if line < 0 or line >= line_count then return original_set_extmark(ns_id, buffer, line, col, opts) end
 
     -- Validate column ranges against actual line length
     local ok, lines = pcall(vim.api.nvim_buf_get_lines, buffer, line, line + 1, false)
@@ -71,10 +67,13 @@ vim.api.nvim_create_autocmd({ "BufWinEnter", "WinEnter" }, {
     local bufname = vim.api.nvim_buf_get_name(0)
     local modifiable = vim.bo.modifiable
     local buflisted = vim.bo.buflisted
+    local is_regular_buffer = buftype == "" and filetype ~= "help" and filetype ~= "qf"
+    local is_named_buffer = is_regular_buffer and bufname ~= ""
+    local is_new_buffer = is_regular_buffer and bufname == "" and modifiable and buflisted
     -- Only highlight in normal file buffers
     -- Exclude popups, quickfix, help, dashboard, etc.
     -- Dashboard buffers are typically unnamed, so require bufname OR (unnamed + modifiable + listed for new files)
-    local is_normal_file = buftype == "" and filetype ~= "help" and filetype ~= "qf" and bufname ~= "" -- Only highlight buffers with actual filenames
+    local is_normal_file = is_named_buffer or is_new_buffer -- Allow unnamed new files if they're modifiable and listed
     if is_normal_file then
       vim.cmd [[match TrailingWhitespace /\s\+$/]]
     else
@@ -97,9 +96,7 @@ vim.filetype.add {
 vim.opt.cursorline = false
 vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter", "VimEnter" }, {
   pattern = "*",
-  callback = function()
-    vim.opt.cursorline = false
-  end,
+  callback = function() vim.opt.cursorline = false end,
 })
 
 -- Custom Zen command with width argument
@@ -125,8 +122,8 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = "qf",
   callback = function()
     vim.keymap.set("n", "<cr>", function()
-      vim.cmd("cc")
-      vim.cmd("cclose")
+      vim.cmd "cc"
+      vim.cmd "cclose"
     end, { buffer = true, desc = "Jump to location and close quickfix" })
   end,
 })
@@ -238,18 +235,16 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 -- read .vimrc.local if present (relative to current working dir)
-if vim.fn.filereadable(".vimrc.local") == 1 then
-  vim.cmd("source .vimrc.local")
-end
+if vim.fn.filereadable ".vimrc.local" == 1 then vim.cmd "source .vimrc.local" end
 
 -- macOS system appearance detection and colorscheme switching
-if vim.fn.has("mac") == 1 or vim.fn.has("macunix") == 1 then
+if vim.fn.has "mac" == 1 or vim.fn.has "macunix" == 1 then
   local function get_system_appearance()
-    local handle = io.popen("defaults read -g AppleInterfaceStyle 2>/dev/null")
+    local handle = io.popen "defaults read -g AppleInterfaceStyle 2>/dev/null"
     if handle then
-      local result = handle:read("*a")
+      local result = handle:read "*a"
       handle:close()
-      return result:match("Dark") and "dark" or "light"
+      return result:match "Dark" and "dark" or "light"
     end
     return "dark" -- default to dark if detection fails
   end

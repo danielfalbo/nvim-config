@@ -85,7 +85,7 @@ return {
             local filetype = vim.bo.filetype
             -- Only save if it's a normal buffer (not quickfix, neo-tree, etc.)
             if buftype == "" and filetype ~= "qf" and vim.bo.modifiable then
-              vim.cmd("w")
+              vim.cmd "w"
             else
               -- Fall back to default behavior
               vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<CR>", true, false, true), "n", false)

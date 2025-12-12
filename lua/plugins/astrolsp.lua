@@ -109,13 +109,14 @@ return {
     },
     -- A custom `on_attach` function to be run after the default `on_attach` function
     -- takes two parameters `client` and `bufnr`  (`:h lspconfig-setup`)
-    on_attach = function(client, bufnr)
+    on_attach = function(client, _)
       -- this would disable semanticTokensProvider for all clients
       -- client.server_capabilities.semanticTokensProvider = nil
 
       -- Add comma to trigger characters for TypeScript LSP
       if client.name == "tsserver" and client.server_capabilities.completionProvider then
-        client.server_capabilities.completionProvider.triggerCharacters = client.server_capabilities.completionProvider.triggerCharacters or {}
+        client.server_capabilities.completionProvider.triggerCharacters = client.server_capabilities.completionProvider.triggerCharacters
+          or {}
         if not vim.tbl_contains(client.server_capabilities.completionProvider.triggerCharacters, ",") then
           table.insert(client.server_capabilities.completionProvider.triggerCharacters, ",")
         end
