@@ -61,6 +61,30 @@ if vim.env.TMUX then
   vim.env.COLORTERM = "truecolor"
   -- Force Neovim to use truecolor regardless of terminfo
   vim.cmd "set termguicolors"
+
+  -- Configure tmux automatically: smart pane navigation and truecolor support
+  local function tmux_command(cmd)
+    -- Extract socket from TMUX env var (format: socket,pid,time)
+    local tmux_socket = vim.env.TMUX:match("([^,]+)")
+    if tmux_socket then
+      local full_cmd = string.format("tmux -S %s %s 2>/dev/null", vim.fn.shellescape(tmux_socket), cmd)
+      vim.fn.system(full_cmd)
+    else
+      -- Fallback: use default tmux command (targets current session)
+      vim.fn.system(string.format("tmux %s 2>/dev/null", cmd))
+    end
+  end
+
+  -- Smart tmux-nvim pane navigation with CTRL {hjkl}
+  local is_vim_check = "ps -o state= -o comm= -t '#{pane_tty}' | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?nvim(.diff)?$'"
+  tmux_command(string.format('bind-key -n C-h if-shell "%s" "send-keys C-h" "select-pane -L"', is_vim_check))
+  tmux_command(string.format('bind-key -n C-j if-shell "%s" "send-keys C-j" "select-pane -D"', is_vim_check))
+  tmux_command(string.format('bind-key -n C-k if-shell "%s" "send-keys C-k" "select-pane -U"', is_vim_check))
+  tmux_command(string.format('bind-key -n C-l if-shell "%s" "send-keys C-l" "select-pane -R"', is_vim_check))
+
+  -- Enable truecolor support
+  tmux_command('set -g default-terminal "xterm-256color"')
+  tmux_command('set -ag terminal-overrides ",alacritty:RGB,xterm-256color:RGB"')
 end
 
 -- Enable system clipboard on Linux
