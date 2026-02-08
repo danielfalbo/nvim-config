@@ -325,7 +325,7 @@ if vim.fn.has "mac" == 1 or vim.fn.has "macunix" == 1 then
 
   local function set_colorscheme_from_system()
     local appearance = get_system_appearance()
-    local colorscheme = appearance == "light" and "dawnfox" or "nordfox"
+    local colorscheme = appearance == "light" and "dawnfox" or "astrodark"
     pcall(vim.cmd, "colorscheme " .. colorscheme)
   end
 
