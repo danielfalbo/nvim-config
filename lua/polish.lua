@@ -87,8 +87,10 @@ if vim.env.TMUX then
   tmux_command('set -ag terminal-overrides ",alacritty:RGB,xterm-256color:RGB"')
 end
 
--- Enable system clipboard on Linux
-if vim.fn.has "unix" == 1 and vim.fn.has "mac" == 0 and vim.fn.has "macunix" == 0 then
+-- Enable system clipboard
+if vim.fn.has "mac" == 1 or vim.fn.has "macunix" == 1 then
+  vim.opt.clipboard = "unnamedplus"
+elseif vim.fn.has "unix" == 1 then
   vim.opt.clipboard = "unnamedplus"
 end
 

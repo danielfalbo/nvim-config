@@ -104,6 +104,38 @@ return {
   {
     "nvim-neo-tree/neo-tree.nvim",
     opts = {
+      commands = {
+        copy_to_system_clipboard = function(state)
+          local node = state.tree and state.tree:get_node() or nil
+          local path = node and node.get_id and node:get_id() or nil
+          if not path or path == "" then return end
+
+          local function relpath(base, target)
+            if not base or base == "" then return vim.fn.fnamemodify(target, ":.") end
+            base = vim.fn.fnamemodify(base, ":p")
+            target = vim.fn.fnamemodify(target, ":p")
+            if base:sub(-1) ~= "/" then base = base .. "/" end
+            if target:sub(1, #base) == base then return target:sub(#base + 1) end
+            return vim.fn.fnamemodify(target, ":.")
+          end
+
+          local copied = relpath(state.path or vim.fn.getcwd(), path)
+
+          vim.fn.setreg("+", copied)
+          vim.fn.setreg('"', copied)
+
+          if (vim.fn.has "mac" == 1 or vim.fn.has "macunix" == 1) and vim.fn.executable "pbcopy" == 1 then
+            pcall(vim.fn.system, "pbcopy", copied)
+          end
+
+          vim.notify(("Copied to clipboard: %s"):format(copied), vim.log.levels.INFO, { title = "neo-tree" })
+        end,
+      },
+      window = {
+        mappings = {
+          ["y"] = "copy_to_system_clipboard",
+        },
+      },
       filesystem = {
         filtered_items = {
           visible = true,
